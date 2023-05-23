@@ -33,3 +33,6 @@ npm-debug.log
 
 # The built Escript
 /livebook
+
+# The nix build output
+/result
