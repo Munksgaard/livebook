@@ -89,6 +89,15 @@ ENV LIVEBOOK_HOME=/data
 # Copy the release build from the previous stage
 COPY --from=build /app/_build/prod/rel/livebook /app
 
+# Copy binary to production image.
+COPY start.sh /app/bin/start.sh
+
+# Copy Tailscale binaries from the tailscale image on Docker Hub.
+COPY --from=docker.io/tailscale/tailscale:stable /usr/local/bin/tailscaled /app/tailscaled
+COPY --from=docker.io/tailscale/tailscale:stable /usr/local/bin/tailscale /app/tailscale
+RUN mkdir -p /var/run/tailscale /var/cache/tailscale /var/lib/tailscale
+
+
 # Make release files available to any user, in case someone
 # runs the container with `--user`
 RUN chmod -R go=u /app
